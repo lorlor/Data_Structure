@@ -25,11 +25,11 @@ typedef struct node Node;
  * 	Parameter:
  *		n: numbers of element used to initialize the [link list];
  *		head: a temparory parameter, representing the head of [link list],
- *			its data scope stores the length of [link list].*/
+ *			its data scope stores the length of [link list].
+ */
 int initLinkList(Node *list, int n)
 {
 	Node *head = (Node *)malloc(sizeof(Node));
-	printf("%x\n",head);
 	list->next = head;
 	if(n < 0){
 		printf("Invalid input: n should be gr8er than 0\n");
@@ -57,7 +57,6 @@ int initLinkList(Node *list, int n)
 			else{
 				cur->next = (Node *)malloc(sizeof(Node));
 				printf("Please input your data in order:\n");
-				printf("Value n:%d\n",n);
 				scanf("%d",&cur->data);
 				cur->next->next = NULL;
 				cur = cur->next;
@@ -70,7 +69,8 @@ int initLinkList(Node *list, int n)
 }
 
 /* Function traverseLinkList -
- *	Usage: scanning the [link list] created by function initLinkList() in order;*/
+ *	Usage: scanning the [link list] created by function initLinkList() in order;
+ */
 int traverseLinkList(Node *list)
 {
 	Node *temp = list->next->next;
@@ -122,6 +122,7 @@ int insertElem(Node *list, int index, int e)
 
 /* Function removeElem -
  * 	Usage: delete an element at the [index] from the [link list] and don't return it;
+ *	Parameter index: the location at which the element will be removed.
  */
 int removeElem(Node *list, int index)
 {
@@ -144,6 +145,7 @@ int removeElem(Node *list, int index)
 
 /* Function popElem -
  *	Usage: delete an element at the [index] from the [link list] and return it [e_temp];
+ *	Parameter index: the location at which the element will be poped.
  */
 int popElem(Node *list, int index)
 {
@@ -170,6 +172,22 @@ int popElem(Node *list, int index)
 	}
 }
 
+void destroyLinkList(Node *list)
+{
+	Node *cur = list->next;
+	Node *temp = (Node *)malloc(sizeof(Node));
+	while(cur->next != NULL){
+		temp = cur;
+		cur = cur->next;
+		free(temp);
+	}
+}
+
+int length(Node *list)
+{
+	return list->next->data;
+}
+
 int main()
 {
 	Node *l;
@@ -180,21 +198,26 @@ int main()
 	/* Demonstration of function initLinkList() and traverseLinkList(). */
 	initLinkList(l, n);
 	traverseLinkList(l);
+	printf("Length of list is %d\n",length(l));
 	
 	/* Demonstration of function insertElem(). */
 	printf("Please input the index you wanna insert:\n");
 	scanf("%d", &index);
 	insertElem(l, index, 4);
 	traverseLinkList(l);
+	printf("Length of list is %d\n",length(l));
 
 	/* Demonstration of function removeElem(). */
 	removeElem(l, 5);
 	traverseLinkList(l);
+	printf("Length of list is %d\n",length(l));
 
 	/* Demonstration of function popElem(). */
 	tmp = popElem(l, 2);
 	printf("%d\n",tmp);
 	traverseLinkList(l);
+	printf("Length of list is %d\n",length(l));
 
+	destroyLinkList(l);
 	return 0;
 }
